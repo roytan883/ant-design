@@ -1,64 +1,40 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var path = require('path');
-var pkg = require('./package');
+// This config is for building dist files
+const webpack = require('webpack');
+const getWebpackConfig = require('antd-tools/lib/getWebpackConfig');
 
-var entry = {};
-entry['demo'] = './scripts/demo.js';
+// noParse still leave `require('./locale' + name)` in dist files
+// ignore is better
+// http://stackoverflow.com/q/25384360
+function ignoreMomentLocale(webpackConfig) {
+  delete webpackConfig.module.noParse;
+  webpackConfig.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+}
 
-module.exports = {
-  entry: entry,
+function addLocales(webpackConfig) {
+  let packageName = 'antd-with-locales';
+  if (webpackConfig.entry['antd.min']) {
+    packageName += '.min';
+  }
+  webpackConfig.entry[packageName] = './index-with-locales.js';
+  webpackConfig.output.filename = '[name].js';
+}
 
-  cache: true,
+function externalMoment(config) {
+  config.externals.moment = {
+    root: 'moment',
+    commonjs2: 'moment',
+    commonjs: 'moment',
+    amd: 'moment',
+  };
+}
 
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    unsafeCache: true
-  },
+const webpackConfig = getWebpackConfig(false);
+if (process.env.RUN_ENV === 'PRODUCTION') {
+  webpackConfig.forEach((config) => {
+    ignoreMomentLocale(config);
+    externalMoment(config);
+    addLocales(config);
+  });
+}
 
-  noParse: /_site|node_modules/,
-
-  output: {
-    path: path.join(process.cwd(), 'dist'),
-    filename: '[name].js'
-  },
-
-  module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'es3ify',
-    }, {
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-      query: {
-        cacheDirectory: true,
-        presets: ['es2015', 'react', 'stage-0'],
-        plugins: ['add-module-exports']
-      }
-    }, {
-      test: /\.json$/,
-      exclude: /node_modules/,
-      loader: 'json-loader'
-    }, {
-      test: /\.less$/,
-      exclude: /node_modules/,
-      loader: ExtractTextPlugin.extract(
-        'css?sourceMap&-minimize!' + 'postcss-loader!' + 'less?sourceMap'
-      )
-    }, {
-      test: /\.css$/,
-      exclude: /node_modules/,
-      loader: ExtractTextPlugin.extract(
-        'css?sourceMap&-minimize!' + 'postcss-loader'
-      )
-    }]
-  },
-
-  plugins: [
-    new ExtractTextPlugin('[name].css')
-  ],
-
-  devtool: 'source-map'
-};
+module.exports = webpackConfig;

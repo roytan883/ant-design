@@ -1,57 +1,70 @@
-# 可选择
+---
+order: 2
+title:
+  en-US: selection
+  zh-CN: 可选择
+---
 
-- order: 1
+## zh-CN
 
 第一列是联动的选择框。
 
----
+> 默认点击 checkbox 触发选择行为，需要点击行触发可以参考例子：https://codesandbox.io/s/000vqw38rl
+
+## en-US
+
+Rows can be selectable by making first column as a selectable column.
+
+> selection happens when clicking checkbox defaultly. You can see https://codesandbox.io/s/000vqw38rl if you need row-click selection behavior.
 
 ````jsx
 import { Table } from 'antd';
 
 const columns = [{
-  title: '姓名',
+  title: 'Name',
   dataIndex: 'name',
-  render: function (text) {
-    return <a href="#">{text}</a>;
-  }
+  render: text => <a href="#">{text}</a>,
 }, {
-  title: '年龄',
-  dataIndex: 'age'
+  title: 'Age',
+  dataIndex: 'age',
 }, {
-  title: '住址',
-  dataIndex: 'address'
+  title: 'Address',
+  dataIndex: 'address',
 }];
 const data = [{
   key: '1',
-  name: '胡彦斌',
+  name: 'John Brown',
   age: 32,
-  address: '西湖区湖底公园1号'
+  address: 'New York No. 1 Lake Park',
 }, {
   key: '2',
-  name: '胡彦祖',
+  name: 'Jim Green',
   age: 42,
-  address: '西湖区湖底公园1号'
+  address: 'London No. 1 Lake Park',
 }, {
   key: '3',
-  name: '李大嘴',
+  name: 'Joe Black',
   age: 32,
-  address: '西湖区湖底公园1号'
+  address: 'Sidney No. 1 Lake Park',
+}, {
+  key: '4',
+  name: 'Disabled User',
+  age: 99,
+  address: 'Sidney No. 1 Lake Park',
 }];
 
-// 通过 rowSelection 对象表明需要行选择
+// rowSelection object indicates the need for row selection
 const rowSelection = {
-  onChange(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ' + selectedRowKeys);
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   },
-  onSelect: function (record, selected, selectedRows) {
-    console.log(record, selected, selectedRows);
-  },
-  onSelectAll: function (selected, selectedRows) {
-    console.log(selected, selectedRows);
-  }
+  getCheckboxProps: record => ({
+    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    name: record.name,
+  }),
 };
 
-ReactDOM.render(<Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+ReactDOM.render(
+  <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
 , mountNode);
 ````

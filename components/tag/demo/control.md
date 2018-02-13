@@ -1,50 +1,97 @@
-# 数据生成标签
-
-- order: 2
-
-用数组生成一组标签。
-
-> 使用 `afterClose` 而不是 `onClose`，删除时有动画效果。
-
+---
+order: 2
+title:
+  zh-CN: 动态添加和删除
+  en-US: Add & Remove Dynamically
 ---
 
-````jsx
-import { Tag, Button } from 'antd';
+## zh-CN
 
-let index = 2;
-const App = React.createClass({
-  getInitialState() {
-    return {
-      tags: [
-        { key: 1, name: '标签一' },
-        { key: 2, name: '标签二' },
-      ],
-    };
-  },
-  handleClose(key) {
-    const tags = [...this.state.tags].filter(tag => (tag.key !== key) && tag);
+用数组生成一组标签，可以动态添加和删除，通过监听删除动画结束的事件 `afterClose` 实现。
+
+## en-US
+
+Generating a set of Tags by array, you can add and remove dynamically.
+It's based on `afterClose` event, which will be triggered while the close animation end.
+
+````jsx
+import { Tag, Input, Tooltip, Icon } from 'antd';
+
+class EditableTagGroup extends React.Component {
+  state = {
+    tags: ['Unremovable', 'Tag 2', 'Tag 3'],
+    inputVisible: false,
+    inputValue: '',
+  };
+
+  handleClose = (removedTag) => {
+    const tags = this.state.tags.filter(tag => tag !== removedTag);
     console.log(tags);
     this.setState({ tags });
-  },
-  addTag() {
-    const tags = [...this.state.tags];
-    index += 1;
-    tags.push({ key: index, name: '新标签' + index });
-    this.setState({ tags });
-  },
+  }
+
+  showInput = () => {
+    this.setState({ inputVisible: true }, () => this.input.focus());
+  }
+
+  handleInputChange = (e) => {
+    this.setState({ inputValue: e.target.value });
+  }
+
+  handleInputConfirm = () => {
+    const state = this.state;
+    const inputValue = state.inputValue;
+    let tags = state.tags;
+    if (inputValue && tags.indexOf(inputValue) === -1) {
+      tags = [...tags, inputValue];
+    }
+    console.log(tags);
+    this.setState({
+      tags,
+      inputVisible: false,
+      inputValue: '',
+    });
+  }
+
+  saveInputRef = input => this.input = input
+
   render() {
+    const { tags, inputVisible, inputValue } = this.state;
     return (
       <div>
-        {this.state.tags.map(tag =>
-          <Tag key={tag.key} closable afterClose={this.handleClose.bind(this, tag.key)}>{tag.name}</Tag>
+        {tags.map((tag, index) => {
+          const isLongTag = tag.length > 20;
+          const tagElem = (
+            <Tag key={tag} closable={index !== 0} afterClose={() => this.handleClose(tag)}>
+              {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+            </Tag>
+          );
+          return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
+        })}
+        {inputVisible && (
+          <Input
+            ref={this.saveInputRef}
+            type="text"
+            size="small"
+            style={{ width: 78 }}
+            value={inputValue}
+            onChange={this.handleInputChange}
+            onBlur={this.handleInputConfirm}
+            onPressEnter={this.handleInputConfirm}
+          />
         )}
-        <div>
-          <Button onClick={this.addTag}>添加标签</Button>
-        </div>
+        {!inputVisible && (
+          <Tag
+            onClick={this.showInput}
+            style={{ background: '#fff', borderStyle: 'dashed' }}
+          >
+            <Icon type="plus" /> New Tag
+          </Tag>
+        )}
       </div>
     );
   }
-});
+}
 
-ReactDOM.render(<App />, mountNode);
+ReactDOM.render(<EditableTagGroup />, mountNode);
 ````

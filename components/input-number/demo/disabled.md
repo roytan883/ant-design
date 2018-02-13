@@ -1,25 +1,30 @@
-# 不可用
+---
+order: 2
+title:
+    zh-CN: 不可用
+    en-US: Disabled
+---
 
-- order: 2
+## zh-CN
 
 点击按钮切换可用状态。
 
----
+## en-US
+
+Click the button to toggle between available and disabled states.
 
 ````jsx
 import { InputNumber, Button } from 'antd';
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      disabled: true
-    };
-  },
-  toggle() {
+class App extends React.Component {
+  state = {
+    disabled: true,
+  };
+  toggle = () => {
     this.setState({
-      disabled: !this.state.disabled
+      disabled: !this.state.disabled,
     });
-  },
+  }
   render() {
     return (
       <div>
@@ -30,7 +35,7 @@ const Test = React.createClass({
       </div>
     );
   }
-});
+}
 
-ReactDOM.render(<Test />, mountNode);
+ReactDOM.render(<App />, mountNode);
 ````

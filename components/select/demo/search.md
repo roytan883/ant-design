@@ -1,28 +1,48 @@
-# 带搜索框
-
-- order: 1
-
-在浮层内顶部有搜索框的单项选择器。
-
 ---
+order: 1
+title:
+  zh-CN: 带搜索框
+  en-US: Select with search field
+---
+
+## zh-CN
+
+展开后可对选项进行搜索。
+
+## en-US
+
+Search the options while expanded.
 
 ````jsx
 import { Select } from 'antd';
 const Option = Select.Option;
 
 function handleChange(value) {
-  console.log('selected ' + value);
+  console.log(`selected ${value}`);
+}
+
+function handleBlur() {
+  console.log('blur');
+}
+
+function handleFocus() {
+  console.log('focus');
 }
 
 ReactDOM.render(
-  <Select defaultValue="lucy" showSearch style={{ width: 200 }}
-    notFoundContent="找不到呐！"
-    searchPlaceholder="输入"
-    onChange={handleChange}>
-    <Option value="jack">jack</Option>
-    <Option value="lucy">lucy</Option>
-    <Option value="disabled" disabled>disabled</Option>
-    <Option value="yiminghe">yiminghe</Option>
+  <Select
+    showSearch
+    style={{ width: 200 }}
+    placeholder="Select a person"
+    optionFilterProp="children"
+    onChange={handleChange}
+    onFocus={handleFocus}
+    onBlur={handleBlur}
+    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+  >
+    <Option value="jack">Jack</Option>
+    <Option value="lucy">Lucy</Option>
+    <Option value="tom">Tom</Option>
   </Select>
 , mountNode);
 ````

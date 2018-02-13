@@ -1,59 +1,68 @@
-# 异步关闭
+---
+order: 1
+title:
+  zh-CN: 异步关闭
+  en-US: Asynchronously close
+---
 
-- order: 1
+## zh-CN
 
 点击确定后异步关闭对话框，例如提交表单。
 
----
+## en-US
+
+Asynchronously close a modal dialog when a user clicked OK button, for example,
+you can use this pattern when you submit a form.
 
 ````jsx
 import { Modal, Button } from 'antd';
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      ModalText: '对话框的内容',
-      visible: false
-    };
-  },
-  showModal() {
+class App extends React.Component {
+  state = {
+    ModalText: 'Content of the modal',
+    visible: false,
+    confirmLoading: false,
+  }
+  showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
-  },
-  handleOk() {
+  }
+  handleOk = () => {
     this.setState({
-      ModalText: '对话框将在两秒后关闭',
-      confirmLoading: true
+      ModalText: 'The modal will be closed after two seconds',
+      confirmLoading: true,
     });
     setTimeout(() => {
       this.setState({
         visible: false,
-        confirmLoading: false
+        confirmLoading: false,
       });
     }, 2000);
-  },
-  handleCancel() {
-    console.log('点击了取消');
+  }
+  handleCancel = () => {
+    console.log('Clicked cancel button');
     this.setState({
-      visible: false
+      visible: false,
     });
-  },
+  }
   render() {
+    const { visible, confirmLoading, ModalText } = this.state;
     return (
       <div>
-        <Button type="primary" onClick={this.showModal}>显示对话框</Button>
-        <Modal title="对话框标题"
-          visible={this.state.visible}
+        <Button type="primary" onClick={this.showModal}>Open</Button>
+        <Modal title="Title"
+          visible={visible}
           onOk={this.handleOk}
-          confirmLoading={this.state.confirmLoading}
-          onCancel={this.handleCancel}>
-          <p>{this.state.ModalText}</p>
+          confirmLoading={confirmLoading}
+          onCancel={this.handleCancel}
+        >
+          <p>{ModalText}</p>
         </Modal>
       </div>
     );
   }
-});
+}
 
-ReactDOM.render(<Test/>, mountNode);
+ReactDOM.render(<App />, mountNode);
 ````

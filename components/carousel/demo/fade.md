@@ -1,10 +1,17 @@
-# 渐显
+---
+order: 2
+title:
+  zh-CN: 渐显
+  en-US: Fade in
+---
 
-- order: 2
+## zh-CN
 
 切换效果为渐显。
 
----
+## en-US
+
+Slides use fade for transition.
 
 ````jsx
 import { Carousel } from 'antd';
@@ -19,3 +26,17 @@ ReactDOM.render(
 , mountNode);
 ````
 
+````css
+/* For demo */
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
+````

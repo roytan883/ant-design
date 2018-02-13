@@ -1,57 +1,58 @@
-# 加载中
+---
+order: 4
+title:
+  zh-CN: 加载中状态
+  en-US: Loading
+---
 
-- order: 4
+## zh-CN
 
 添加 `loading` 属性即可让按钮处于加载状态，最后两个按钮演示点击后进入加载状态。
 
----
+## en-US
+
+A loading indicator can be added to a button by setting the `loading` property on the `Button`.
 
 ````jsx
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
 
-const App = React.createClass({
-  getInitialState() {
-    return {
-      loading: false,
-      iconLoading: false,
-    };
-  },
-  enterLoading() {
+class App extends React.Component {
+  state = {
+    loading: false,
+    iconLoading: false,
+  }
+
+  enterLoading = () => {
     this.setState({ loading: true });
-  },
-  enterIconLoading() {
+  }
+
+  enterIconLoading = () => {
     this.setState({ iconLoading: true });
-  },
+  }
+
   render() {
     return (
-      <div>
-        <Button type="primary" size="large" loading>
-          加载中
-        </Button>
+      <span>
         <Button type="primary" loading>
-          加载中
+          Loading
         </Button>
         <Button type="primary" size="small" loading>
-          加载中
+          Loading
         </Button>
         <br />
         <Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
-          点击变加载
+          Click me!
         </Button>
-        <Button type="primary" loading={this.state.iconLoading} onClick={this.enterIconLoading}>
-          <Icon type="poweroff" />点击变加载
+        <Button type="primary" icon="poweroff" loading={this.state.iconLoading} onClick={this.enterIconLoading}>
+          Click me!
         </Button>
-      </div>
+        <br />
+        <Button shape="circle" loading />
+        <Button type="primary" shape="circle" loading />
+      </span>
     );
   }
-});
+}
 
 ReactDOM.render(<App />, mountNode);
 ````
-
-<style>
-#components-button-demo-loading .ant-btn {
-  margin-right: 8px;
-  margin-bottom: 12px;
-}
-</style>

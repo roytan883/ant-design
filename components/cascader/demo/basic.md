@@ -1,34 +1,41 @@
-# 基本
+---
+order: 0
+title:
+  zh-CN: 基本
+  en-US: Basic
+---
 
-- order: 0
+## zh-CN
 
 省市区级联。
 
----
+## en-US
+
+Cascade selection box for selecting province/city/district.
 
 ````jsx
 import { Cascader } from 'antd';
 
 const options = [{
   value: 'zhejiang',
-  label: '浙江',
+  label: 'Zhejiang',
   children: [{
     value: 'hangzhou',
-    label: '杭州',
+    label: 'Hangzhou',
     children: [{
       value: 'xihu',
-      label: '西湖',
+      label: 'West Lake',
     }],
   }],
 }, {
   value: 'jiangsu',
-  label: '江苏',
+  label: 'Jiangsu',
   children: [{
     value: 'nanjing',
-    label: '南京',
+    label: 'Nanjing',
     children: [{
       value: 'zhonghuamen',
-      label: '中华门',
+      label: 'Zhong Hua Men',
     }],
   }],
 }];
@@ -38,6 +45,6 @@ function onChange(value) {
 }
 
 ReactDOM.render(
-  <Cascader options={options} onChange={onChange} />
+  <Cascader options={options} onChange={onChange} placeholder="Please select" />
 , mountNode);
 ````

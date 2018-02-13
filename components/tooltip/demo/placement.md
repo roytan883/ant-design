@@ -1,59 +1,69 @@
-# 位置
+---
+order: 1
+title:
+  zh-CN: 位置
+  en-US: Placement
+---
 
-- order: 1
+## zh-CN
 
 位置有 12 个方向。
 
----
+## en-US
+
+The ToolTip has 12 placements choice.
 
 ````jsx
-import { Tooltip } from 'antd';
-const text = <span>提示文字</span>;
+import { Tooltip, Button } from 'antd';
+
+const text = <span>prompt text</span>;
+
+const buttonWidth = 70;
 
 ReactDOM.render(
-  <div>
-    <div style={{ marginLeft: 60 }}>
+  <div className="demo">
+    <div style={{ marginLeft: buttonWidth, whiteSpace: 'nowrap' }}>
       <Tooltip placement="topLeft" title={text}>
-        <a href="#">上左</a>
+        <Button>TL</Button>
       </Tooltip>
       <Tooltip placement="top" title={text}>
-        <a href="#">上边</a>
+        <Button>Top</Button>
       </Tooltip>
       <Tooltip placement="topRight" title={text}>
-        <a href="#">上右</a>
+        <Button>TR</Button>
       </Tooltip>
     </div>
-    <div style={{ width: 60, float: 'left' }}>
+    <div style={{ width: buttonWidth, float: 'left' }}>
       <Tooltip placement="leftTop" title={text}>
-        <a href="#">左上</a>
+        <Button>LT</Button>
       </Tooltip>
       <Tooltip placement="left" title={text}>
-        <a href="#">左边</a>
+        <Button>Left</Button>
       </Tooltip>
       <Tooltip placement="leftBottom" title={text}>
-        <a href="#">左下</a>
+        <Button>LB</Button>
       </Tooltip>
     </div>
-    <div style={{ width: 60, marginLeft: 270 }}>
+    <div style={{ width: buttonWidth, marginLeft: (buttonWidth * 4) + 24 }}>
       <Tooltip placement="rightTop" title={text}>
-        <a href="#">右上</a>
+        <Button>RT</Button>
       </Tooltip>
       <Tooltip placement="right" title={text}>
-        <a href="#">右边</a>
+        <Button>Right</Button>
       </Tooltip>
       <Tooltip placement="rightBottom" title={text}>
-        <a href="#">右下</a>
+        <Button>RB</Button>
       </Tooltip>
     </div>
-    <div style={{ marginLeft: 60, clear: 'both' }}>
+    <div style={{ marginLeft: buttonWidth, clear: 'both', whiteSpace: 'nowrap' }}>
       <Tooltip placement="bottomLeft" title={text}>
-        <a href="#">上右</a>
+        <Button>BL</Button>
       </Tooltip>
       <Tooltip placement="bottom" title={text}>
-        <a href="#">下边</a>
+        <Button>Bottom</Button>
       </Tooltip>
       <Tooltip placement="bottomRight" title={text}>
-        <a href="#">下右</a>
+        <Button>BR</Button>
       </Tooltip>
     </div>
   </div>
@@ -61,16 +71,16 @@ ReactDOM.render(
 ````
 
 <style>
-#components-tooltip-demo-placement a {
-  display: inline-block;
-  line-height: 32px;
-  height: 32px;
-  width: 60px;
-  font-size: 14px;
+.code-box-demo .demo {
+  overflow: auto;
+}
+.code-box-demo .ant-btn {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+#components-tooltip-demo-placement .ant-btn {
+  width: 70px;
   text-align: center;
-  background: #f5f5f5;
-  margin-right: 1em;
-  margin-bottom: 1em;
-  border-radius: 6px;
+  padding: 0;
 }
 </style>

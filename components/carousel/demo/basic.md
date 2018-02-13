@@ -1,10 +1,17 @@
-# 基本
+---
+order: 0
+title:
+  zh-CN: 基本
+  en-US: Basic
+---
 
-- order: 0
+## zh-CN
 
 最简单的用法。
 
----
+## en-US
+
+Basic usage.
 
 ````jsx
 import { Carousel } from 'antd';
@@ -21,4 +28,19 @@ ReactDOM.render(
     <div><h3>4</h3></div>
   </Carousel>
 , mountNode);
+````
+
+````css
+/* For demo */
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
 ````
